@@ -155,7 +155,7 @@
     }
 
     .fee-item {
-        padding: var(--spacing-sm) 0;
+        padding:1rem 0 ;
         font-size: 0.8125rem;
     }
 
@@ -173,9 +173,9 @@
 
     .payment-item {
         padding: var(--spacing-sm) var(--spacing-md);
-        margin-bottom: var(--spacing-xs);
+        margin-bottom: 1rem;
         flex-wrap: wrap;
-        gap: var(--spacing-xs);
+        gap: var(--spacing-sm);
     }
 
     .payment-label {
