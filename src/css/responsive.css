@@ -1,0 +1,440 @@
+/**
+ * レスポンシブデザイン - モダンB2Bスタイル
+ * モバイル・タブレット・PC対応
+ */
+
+/* タブレット対応 (768px~1023px) */
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+    .main-container {
+        padding: var(--spacing-lg);
+        max-width: 100%;
+    }
+    
+    .header-title {
+        font-size: 2.25rem;
+        line-height: 1.2;
+    }
+    
+    .header-subtitle {
+        font-size: 1.0625rem;
+    }
+    
+    .form-container {
+        padding: var(--spacing-xl);
+        max-width: 600px;
+    }
+    
+    .results-container {
+        min-height: 500px;
+    }
+    
+    .results-column {
+        padding: var(--spacing-xl);
+    }
+}
+
+/* モバイル対応 (767px以下) */
+@media screen and (max-width: 767px) {
+    .main-container {
+        padding: var(--spacing-md);
+    }
+    
+    /* ヘッダー調整 */
+    .header {
+        margin-bottom: var(--spacing-xl);
+        padding: var(--spacing-lg) 0;
+    }
+    
+    .header-title {
+        font-size: 2rem;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .header-subtitle {
+        font-size: 1rem;
+    }
+    
+    /* フォーム調整 */
+    .input-section {
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .form-container {
+        padding: var(--spacing-xl) var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .form-label {
+        font-size: 0.8125rem;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .input-group {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        align-items: stretch;
+    }
+    
+    .price-input {
+        text-align: center;
+        font-size: 1.25rem;
+        padding: var(--spacing-lg);
+        width: 100%;
+    }
+    
+    .input-unit {
+        align-self: center;
+        font-size: 1.25rem;
+        order: -1;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .calculate-btn {
+        width: 100%;
+        padding: var(--spacing-lg);
+        font-size: 1rem;
+        margin-top: var(--spacing-sm);
+    }
+    
+    /* 結果表示エリア - モバイルでは縦積み */
+    .results-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+    
+    /* モバイルでのGrid area調整 */
+    .note-card,
+    .save-section-inline,
+    .tips-card,
+    .brain-card,
+    .coconala-card {
+        grid-area: unset;
+    }
+    
+    /* 結果タイトル */
+    .results-title {
+        font-size: 1rem;
+        line-height: 1.4;
+        padding: 0 var(--spacing-sm);
+        text-align: center;
+    }
+    
+    /* プラットフォームカード（モバイル用調整） */
+    .platform-card {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .platform-title {
+        font-size: 1.0625rem;
+        padding: var(--spacing-md);
+    }
+    
+    .amount-range,
+    .platform-result {
+        font-size: 1.125rem;
+        margin: var(--spacing-md) 0;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .fee-breakdown {
+        padding: 0 var(--spacing-md) var(--spacing-md);
+    }
+    
+    .fee-item {
+        padding: var(--spacing-sm) 0;
+        font-size: 0.8125rem;
+    }
+    
+    .fee-label {
+        font-size: 0.8125rem;
+    }
+    
+    .fee-value {
+        font-size: 0.8125rem;
+    }
+    
+    .payment-methods {
+        padding: 0 var(--spacing-md) var(--spacing-md);
+    }
+    
+    .payment-item {
+        padding: var(--spacing-sm) var(--spacing-md);
+        margin-bottom: var(--spacing-xs);
+        flex-wrap: wrap;
+        gap: var(--spacing-xs);
+    }
+    
+    .payment-label {
+        font-size: 0.8125rem;
+        flex: 1 1 100%;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .payment-fee {
+        font-size: 0.75rem;
+        margin-right: var(--spacing-sm);
+    }
+    
+    .payment-result {
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+    
+    .fee-options {
+        margin-top: var(--spacing-xs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .fee-option {
+        padding: var(--spacing-xs) 0;
+        font-size: 0.75rem;
+    }
+    
+    /* 保存ボタン */
+    .save-section {
+        margin-top: var(--spacing-lg);
+        padding: var(--spacing-md);
+    }
+    
+    .save-image-btn {
+        width: 100%;
+        padding: var(--spacing-lg);
+        font-size: 1rem;
+    }
+    
+    /* インライン保存セクション */
+    .save-section-inline {
+        margin-top: var(--spacing-md);
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+    
+    .sample-preview {
+        max-width: 150px;
+    }
+    
+    .save-section-inline .save-image-btn {
+        width: 100%;
+        padding: var(--spacing-lg);
+        font-size: 1rem;
+    }
+    
+    /* エラーメッセージ */
+    .error-message {
+        font-size: 0.8125rem;
+        margin-top: var(--spacing-sm);
+    }
+}
+
+/* 極小画面対応 (480px以下) */
+@media screen and (max-width: 480px) {
+    .main-container {
+        padding: var(--spacing-sm);
+    }
+    
+    .header-title {
+        font-size: 1.75rem;
+    }
+    
+    .header-subtitle {
+        font-size: 0.9375rem;
+    }
+    
+    .form-container {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .price-input {
+        font-size: 1.125rem;
+        padding: var(--spacing-md);
+    }
+    
+    .results-column {
+        padding: var(--spacing-md);
+    }
+    
+    .results-title {
+        font-size: 1.125rem;
+        padding: 0;
+    }
+    
+    .platform-title {
+        font-size: 1rem;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .amount-range,
+    .platform-result {
+        font-size: 1rem;
+    }
+    
+    .payment-item {
+        padding: var(--spacing-sm);
+    }
+    
+    .payment-label {
+        font-size: 0.75rem;
+    }
+    
+    .payment-fee,
+    .payment-result {
+        font-size: 0.75rem;
+    }
+}
+
+/* 横向きモバイル対応 */
+@media screen and (max-width: 767px) and (orientation: landscape) {
+    .header {
+        margin-bottom: var(--spacing-lg);
+        padding: var(--spacing-md) 0;
+    }
+    
+    .input-section {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .results-container {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    
+    .results-column {
+        padding: var(--spacing-md);
+    }
+    
+    .platform-card {
+        margin-bottom: var(--spacing-sm);
+    }
+}
+
+/* タッチデバイス対応 */
+@media (hover: none) and (pointer: coarse) {
+    /* ボタンのタッチターゲットサイズを44px以上に */
+    .calculate-btn,
+    .save-image-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* ホバー効果を無効化 */
+    .calculate-btn:hover,
+    .save-image-btn:hover,
+    .platform-card:hover,
+    .payment-item:hover {
+        transform: none;
+    }
+    
+    /* タッチ時のフィードバック */
+    .calculate-btn:active,
+    .save-image-btn:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+    
+    .platform-card:active,
+    .payment-item:active {
+        transform: scale(0.995);
+        transition: transform 0.1s ease;
+    }
+    
+    /* 入力フィールドのフォーカス調整 */
+    .price-input:focus {
+        /* iOS Safari でのズームを防ぐ */
+        font-size: 16px;
+    }
+}
+
+/* 高解像度ディスプレイ対応 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .header-title,
+    .platform-title,
+    .amount-range,
+    .platform-result {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* ダークモード対応（モバイル） */
+@media (prefers-color-scheme: dark) and (max-width: 767px) {
+    .form-container {
+        background: var(--gray-800);
+        border-color: var(--gray-700);
+    }
+    
+    .platform-card {
+        background: var(--gray-800);
+        border-color: var(--gray-700);
+    }
+    
+    .payment-item {
+        background: var(--gray-900);
+        border-color: var(--gray-700);
+    }
+    
+    .payment-item:hover {
+        background: var(--gray-700);
+    }
+}
+
+/* 印刷対応（モバイル） */
+@media print and (max-width: 767px) {
+    .main-container {
+        padding: 0;
+    }
+    
+    .header-subtitle,
+    .input-section,
+    .save-section {
+        display: none;
+    }
+    
+    .results-container {
+        box-shadow: none;
+        border: 1px solid #000;
+        background: white;
+    }
+    
+    .results-column {
+        padding: var(--spacing-md);
+    }
+    
+    .platform-card {
+        break-inside: avoid;
+        margin-bottom: var(--spacing-sm);
+    }
+}
+
+/* アニメーション無効化設定対応 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .calculate-btn:active,
+    .save-image-btn:active,
+    .platform-card:active,
+    .payment-item:active {
+        transform: none !important;
+    }
+}
+
+/* コントラスト向上要求対応（モバイル） */
+@media (prefers-contrast: high) and (max-width: 767px) {
+    .form-container,
+    .platform-card,
+    .payment-item {
+        border: 2px solid var(--text-primary);
+    }
+    
+    .calculate-btn,
+    .save-image-btn {
+        border: 2px solid #000000;
+    }
+}

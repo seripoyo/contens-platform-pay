@@ -1,0 +1,696 @@
+/**
+ * コンポーネント別スタイル - モダンB2Bデザイン
+ * 洗練されたUIコンポーネント
+ */
+
+/* プラットフォームカードの基本スタイル */
+.platform-card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    padding: 0;
+    margin-bottom: var(--spacing-md);
+    transition: all 0.2s ease;
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    height: 100%;
+}
+
+.platform-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* プラットフォーム固有のアクセントカラー */
+.note-card {
+    border-top: 4px solid #00d4aa;
+}
+
+.tips-card {
+    border-top: 4px solid #ff6b35;
+}
+
+.brain-card {
+    border-top: 4px solid #4285f4;
+}
+
+.coconala-card {
+    border-top: 4px solid #fa6400;
+}
+
+/* プラットフォームタイトル */
+.platform-title {
+    font-size: var(--font-size-section-title);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+    padding: var(--spacing-lg);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color-light);
+    background: var(--gray-50);
+    display: flex;
+    align-items: center;
+    line-height: var(--line-height-tight);
+}
+
+.platform-title::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: var(--spacing-sm);
+    position: relative;
+    top: 2px;
+}
+
+span.fee-label.note-fee-label {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+.note-card .platform-title::before {
+    background: #00d4aa;
+}
+
+.tips-card .platform-title::before {
+    background: #ff6b35;
+}
+
+.brain-card .platform-title::before {
+    background: #4285f4;
+}
+
+.coconala-card .platform-title::before {
+    background: #fa6400;
+}
+
+/* note の金額範囲表示 */
+.amount-range {
+    font-size: var(--font-size-subsection);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-color);
+    text-align: center;
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-sm);
+    line-height: var(--line-height-normal);
+}
+
+/* その他プラットフォームの結果表示 */
+.platform-result {
+    font-size: var(--font-size-subsection);
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: center;
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-sm);
+    position: relative;
+    line-height: var(--line-height-normal);
+}
+
+/* 手数料内訳 */
+.fee-breakdown {
+    padding: 0 var(--spacing-lg) var(--spacing-md);
+}
+
+.fee-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+.fee-item:last-child {
+    border-bottom: none;
+}
+
+.fee-label {
+    font-size: var(--font-size-body);
+    color: var(--text-secondary);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-normal);
+}
+
+.fee-value {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    color: var(--error-color);
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+    line-height: var(--line-height-tight);
+}
+
+/* 手数料オプション（複数選択肢がある場合） */
+.fee-options {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--gray-50);
+    border-radius: var(--border-radius-sm);
+}
+
+.fee-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-normal);
+}
+
+.fee-option:not(:last-child) {
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+.option-label {
+    color: var(--text-muted);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-normal);
+        font-size: var(--font-size-caption);
+}
+
+.option-value {
+    font-weight: var(--font-weight-medium);
+    color: var(--error-color);
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+    line-height: var(--line-height-tight);
+}
+
+/* note の決済方法一覧 */
+.payment-methods {
+    padding: 0 var(--spacing-lg) var(--spacing-md);
+}
+
+.payment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    background: var(--gray-50);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color-light);
+    transition: all 0.2s ease;
+    min-height: 44px;
+    /* タッチターゲットサイズ */
+}
+
+.payment-item:hover {
+    background: var(--primary-light);
+    border-color: var(--primary-color);
+    transform: translateX(2px);
+}
+
+.payment-item:last-child {
+    margin-bottom: 0;
+}
+
+.payment-label {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    flex: 1;
+    line-height: var(--line-height-normal);
+}
+
+.payment-fee {
+    font-size: var(--font-size-component);
+    color: var(--error-color);
+    margin-right: var(--spacing-md);
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+}
+
+.payment-result {
+    font-size: var(--font-size-components);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-color);
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+    line-height: var(--line-height-tight);
+}
+
+/* バリデーション状態のスタイル */
+.price-input.valid {
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 3px var(--secondary-light);
+}
+
+.price-input.invalid {
+    border-color: var(--error-color);
+    box-shadow: 0 0 0 3px rgb(248 113 113 / 0.1);
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-3px);
+    }
+
+    75% {
+        transform: translateX(3px);
+    }
+}
+
+/* ローディング状態 */
+.calculate-btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.calculate-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 成功アニメーション */
+.success-animation {
+    animation: successPulse 0.4s ease-out;
+}
+
+@keyframes successPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 結果表示のフェードインアニメーション */
+.results-section.show {
+    animation: slideInUp 0.4s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* プラットフォームカードの段階的表示 */
+.platform-card {
+    animation: cardFadeIn 0.3s ease-out;
+}
+
+.platform-card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.platform-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.platform-card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.platform-card:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 決済方法アイテムの段階的表示 */
+.payment-item {
+    animation: itemSlideIn 0.2s ease-out;
+}
+
+.payment-item {
+    margin-bottom: 1rem;
+}
+
+.payment-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.payment-item:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.payment-item:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.payment-item:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.payment-item:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.payment-item:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+@keyframes itemSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 数値のカウントアップアニメーション */
+.count-up {
+    animation: countUp 0.6s ease-out;
+}
+
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* バッジ・ラベル */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-primary {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.badge-secondary {
+    background: var(--secondary-light);
+    color: var(--secondary-hover);
+}
+
+.badge-success {
+    background: var(--secondary-light);
+    color: var(--secondary-hover);
+}
+
+.badge-error {
+    background: rgb(248 113 113 / 0.1);
+    color: var(--error-color);
+}
+
+/* ステータスインジケーター */
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-indicator::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: var(--spacing-sm);
+}
+
+.status-indicator.best::before {
+    background: var(--success-color);
+    box-shadow: 0 0 4px rgba(16, 185, 129, 0.4);
+}
+
+.status-indicator.good::before {
+    background: var(--warning-color);
+    box-shadow: 0 0 4px rgba(245, 158, 11, 0.4);
+}
+
+.status-indicator.normal::before {
+    background: var(--gray-400);
+}
+
+/* プログレスバー */
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--gray-200);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: var(--spacing-sm) 0;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+.progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* カード統計表示 */
+.stat-card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-value {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* エンプティステート */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-3xl) var(--spacing-lg);
+    color: var(--text-muted);
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+}
+
+.empty-state-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.empty-state-description {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* アクセシビリティ向上 */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* フォーカス表示の改善 */
+.price-input:focus,
+.calculate-btn:focus,
+.save-image-btn:focus,
+.platform-card:focus-within {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* 高コントラスト対応 */
+@media (prefers-contrast: high) {
+    .platform-card {
+        border: 2px solid var(--text-primary);
+    }
+
+    .payment-item {
+        border: 1px solid var(--text-secondary);
+    }
+
+    .badge {
+        border: 1px solid currentColor;
+    }
+}
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+    .platform-title {
+        background: var(--gray-800);
+    }
+
+    .payment-item {
+        background: var(--gray-800);
+    }
+
+    .payment-item:hover {
+        background: var(--gray-700);
+    }
+
+    .fee-options {
+        background: var(--gray-800);
+    }
+}
+
+/* インライン保存セクション（noteの下部） */
+.save-section-inline {
+    padding: var(--spacing-lg);
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.sample-image {
+    text-align: center;
+}
+
+.sample-preview {
+    width: 100%;
+    max-width: 385px;
+    height: auto;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.sample-label {
+    font-size: var(--font-size-caption);
+    color: var(--text-muted);
+    margin-top: var(--spacing-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+}
+
+.save-section-inline .save-image-btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 0.875rem;
+}
+
+/* 印刷対応 */
+@media print {
+    .platform-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+
+    .platform-title {
+        background: transparent;
+        border-bottom: 1px solid #000;
+    }
+
+    .payment-item {
+        background: transparent;
+        border: 1px solid #ccc;
+    }
+
+    .save-section-inline {
+        display: none;
+    }
+}
