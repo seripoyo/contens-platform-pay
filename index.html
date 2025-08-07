@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>コンテンツ販売手取り額計算 - note・tips・Brain・ココナラ</title>
     <meta name="description" content="note、tips、Brain、ココナラコンテンツマーケットの手数料を一括計算し、手取り額を比較できるツールです。">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-    
+
     <!-- CSS -->
     <link rel="stylesheet" href="src/css/style.css">
     <link rel="stylesheet" href="src/css/components.css">
     <link rel="stylesheet" href="src/css/responsive.css">
-    
+
 </head>
+
 <body>
     <main class="main-container">
         <!-- ヘッダー -->
@@ -22,163 +24,154 @@
             <h1 class="header-title">コンテンツ販売手取り額計算</h1>
             <p class="header-subtitle">note・tips・Brain・ココナラの手数料を一括比較</p>
         </header>
-
         <!-- 入力フォーム -->
         <section class="input-section">
             <div class="form-container">
                 <label for="price-input" class="form-label">販売価格</label>
                 <div class="input-group">
-                    <input 
-                        type="number" 
-                        id="price-input" 
-                        class="price-input" 
-                        placeholder="1000" 
-                        min="1" 
-                        step="1"
-                        autocomplete="off"
-                    >
+                    <input type="number" id="price-input" class="price-input" placeholder="10000" min="1" step="1"
+                        autocomplete="off">
                     <span class="input-unit">円</span>
-                    <button type="button" id="calculate-btn" class="calculate-btn">計算する</button>
+                    <button type="button" id="calculate-btn" class="calculate-btn">計算</button>
                 </div>
                 <div id="input-error" class="error-message" style="display: none;"></div>
             </div>
         </section>
 
         <!-- 計算結果表示エリア -->
-        <section class="results-section" id="results-section" style="display: none;">
+        <section class="results-section" id="results-section">
             <div class="results-header">
-                <h2 id="results-title" class="results-title">0円（税抜き）で販売した際の手取り額</h2>
+                <h2 id="results-title" class="results-title">販売価格を入力して「計算する」を押してください</h2>
             </div>
             
             <div class="results-container">
-                <!-- 左側カラム: note -->
-                <div class="results-column left-column">
-                    <div class="platform-card note-card">
-                        <h3 class="platform-title">note</h3>
-                        <div class="amount-range" id="note-range">0円～0円</div>
-                        
-                        <div class="fee-breakdown">
-                            <div class="fee-item">
-                                <span class="fee-label">プラットフォーム利用料:</span>
-                                <span class="fee-value" id="note-platform-fee">-0円</span>
-                            </div>
-                            <div class="fee-item">
-                                <span class="fee-label">振込手数料(1回あたり):</span>
-                                <span class="fee-value">-270円</span>
-                            </div>
+                <!-- note card -->
+                <div class="platform-card note-card">
+                    <h3 class="platform-title">note</h3>
+                    <div class="amount-range" id="note-range">－円～－円</div>
+
+                    <div class="fee-breakdown">
+                        <div class="fee-item">
+                            <span class="fee-label">プラットフォーム利用料 (10%)</span>
+                            <span class="fee-value" id="note-platform-fee">-－円</span>
                         </div>
-                        
-                        <div class="payment-methods">
-                            <div class="payment-item">
-                                <span class="payment-label">クレジットカード決済</span>
-                                <span class="payment-fee" id="note-credit-fee">-0円:</span>
-                                <span class="payment-result" id="note-credit-result">0円</span>
-                            </div>
-                            <div class="payment-item">
-                                <span class="payment-label">携帯キャリア決済</span>
-                                <span class="payment-fee" id="note-carrier-fee">-0円:</span>
-                                <span class="payment-result" id="note-carrier-result">0円</span>
-                            </div>
-                            <div class="payment-item">
-                                <span class="payment-label">PayPay決済</span>
-                                <span class="payment-fee" id="note-paypay-fee">-0円:</span>
-                                <span class="payment-result" id="note-paypay-result">0円</span>
-                            </div>
-                            <div class="payment-item">
-                                <span class="payment-label">Amazon Pay決済</span>
-                                <span class="payment-fee" id="note-amazon-fee">-0円:</span>
-                                <span class="payment-result" id="note-amazon-result">0円</span>
-                            </div>
-                            <div class="payment-item">
-                                <span class="payment-label">noteポイント決済</span>
-                                <span class="payment-fee" id="note-point-fee">-0円:</span>
-                                <span class="payment-result" id="note-point-result">0円</span>
-                            </div>
-                            <div class="payment-item">
-                                <span class="payment-label">PayPal決済</span>
-                                <span class="payment-fee" id="note-paypal-fee">-0円:</span>
-                                <span class="payment-result" id="note-paypal-result">0円</span>
-                            </div>
+                        <div class="fee-item">
+                            <span class="fee-label">振込手数料(1回あたり)</span>
+                            <span class="fee-value">-270円</span>
+                        </div>
+                    </div>
+
+                    <div class="payment-methods">
+                        <span class="fee-label note-fee-label">決済方法別手数料</span>
+                        <div class="payment-item">
+                            <span class="payment-label">クレジットカード決済 (5%)</span>
+                            <span class="payment-fee" id="note-credit-fee">-－円</span>
+                            <span class="payment-result" id="note-credit-result">－円</span>
+                        </div>
+                        <div class="payment-item">
+                            <span class="payment-label">携帯キャリア決済 (15%)</span>
+                            <span class="payment-fee" id="note-carrier-fee">-－円</span>
+                            <span class="payment-result" id="note-carrier-result">－円</span>
+                        </div>
+                        <div class="payment-item">
+                            <span class="payment-label">PayPay決済 (7%)</span>
+                            <span class="payment-fee" id="note-paypay-fee">-－円</span>
+                            <span class="payment-result" id="note-paypay-result">－円</span>
+                        </div>
+                        <div class="payment-item">
+                            <span class="payment-label">Amazon Pay決済 (7%)</span>
+                            <span class="payment-fee" id="note-amazon-fee">-－円</span>
+                            <span class="payment-result" id="note-amazon-result">－円</span>
+                        </div>
+                        <div class="payment-item">
+                            <span class="payment-label">noteポイント決済 (10%)</span>
+                            <span class="payment-fee" id="note-point-fee">-－円</span>
+                            <span class="payment-result" id="note-point-result">－円</span>
+                        </div>
+                        <div class="payment-item">
+                            <span class="payment-label">PayPal決済 (6.5%)</span>
+                            <span class="payment-fee" id="note-paypal-fee">-－円</span>
+                            <span class="payment-result" id="note-paypal-result">－円</span>
                         </div>
                     </div>
                 </div>
+                <!-- 画像保存ボタンセクション -->
+                <div class="save-section-inline">
+                    <div class="sample-image">
+                        <img src="assets/images/sample.webp" alt="保存例のサンプル" class="sample-preview">
+                        <p class="sample-label">保存サンプル</p>
+                    </div>
+                    <button type="button" id="save-image-btn" class="save-image-btn">結果を画像で保存</button>
+                </div>
 
-                <!-- 右側カラム: tips, Brain, ココナラ -->
-                <div class="results-column right-column">
-                    <!-- tips -->
-                    <div class="platform-card tips-card">
-                        <h3 class="platform-title">tips</h3>
-                        <div class="platform-result" id="tips-result">0円</div>
-                        
-                        <div class="fee-breakdown">
-                            <div class="fee-item">
-                                <span class="fee-label">コンテンツ販売手数料:</span>
-                                <span class="fee-value" id="tips-content-fee">-0円</span>
-                            </div>
-                            <div class="fee-item">
-                                <span class="fee-label">振込手数料(1回あたり):</span>
-                                <div class="fee-options">
-                                    <div class="fee-option">
-                                        <span class="option-label">通常会員:</span>
-                                        <span class="option-value">-550円</span>
-                                    </div>
-                                    <div class="fee-option">
-                                        <span class="option-label">プラス会員:</span>
-                                        <span class="option-value">-330円</span>
-                                    </div>
+                <!-- tips card -->
+                <div class="platform-card tips-card">
+                    <h3 class="platform-title">tips</h3>
+                    <div class="platform-result" id="tips-result">－円</div>
+
+                    <div class="fee-breakdown">
+                        <div class="fee-item">
+                            <span class="fee-label">コンテンツ販売手数料 (14%)</span>
+                            <span class="fee-value" id="tips-content-fee">-－円</span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">振込手数料(1回あたり)</span>
+                            <div class="fee-options">
+                                <div class="fee-option">
+                                    <span class="option-label">通常会員</span>
+                                    <span class="option-value">-550円</span>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Brain -->
-                    <div class="platform-card brain-card">
-                        <h3 class="platform-title">Brain</h3>
-                        <div class="platform-result" id="brain-result">0円</div>
-                        
-                        <div class="fee-breakdown">
-                            <div class="fee-item">
-                                <span class="fee-label">コンテンツ販売手数料:</span>
-                                <span class="fee-value" id="brain-content-fee">-0円</span>
-                            </div>
-                            <div class="fee-item">
-                                <span class="fee-label">出金手数料(1回あたり):</span>
-                                <span class="fee-value">-275円</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ココナラコンテンツマーケット -->
-                    <div class="platform-card coconala-card">
-                        <h3 class="platform-title">ココナラコンテンツマーケット</h3>
-                        <div class="platform-result" id="coconala-result">0円</div>
-                        
-                        <div class="fee-breakdown">
-                            <div class="fee-item">
-                                <span class="fee-label">販売手数料:</span>
-                                <span class="fee-value" id="coconala-sales-fee">-0円</span>
-                            </div>
-                            <div class="fee-item">
-                                <span class="fee-label">振込手数料(1回あたり):</span>
-                                <div class="fee-options">
-                                    <div class="fee-option">
-                                        <span class="option-label">売上金額3,000円未満:</span>
-                                        <span class="option-value">-160円</span>
-                                    </div>
-                                    <div class="fee-option">
-                                        <span class="option-label">売上金額3,000円以上:</span>
-                                        <span class="option-value">無料</span>
-                                    </div>
+                                <div class="fee-option">
+                                    <span class="option-label">プラス会員</span>
+                                    <span class="option-value">-330円</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 画像保存ボタン -->
-            <div class="save-section">
-                <button type="button" id="save-image-btn" class="save-image-btn">画像として保存</button>
+                <!-- Brain card -->
+                <div class="platform-card brain-card">
+                    <h3 class="platform-title">Brain</h3>
+                    <div class="platform-result" id="brain-result">－円</div>
+
+                    <div class="fee-breakdown">
+                        <div class="fee-item">
+                            <span class="fee-label">コンテンツ販売手数料 (12%)</span>
+                            <span class="fee-value" id="brain-content-fee">-－円</span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">出金手数料(1回あたり)</span>
+                            <span class="fee-value">-275円</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coconala card -->
+                <div class="platform-card coconala-card">
+                    <h3 class="platform-title">ココナラコンテンツマーケット</h3>
+                    <div class="platform-result" id="coconala-result">－円</div>
+
+                    <div class="fee-breakdown">
+                        <div class="fee-item">
+                            <span class="fee-label">販売手数料 (22%)</span>
+                            <span class="fee-value" id="coconala-sales-fee">-－円</span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">振込手数料(1回あたり)</span>
+                            <div class="fee-options">
+                                <div class="fee-option">
+                                    <span class="option-label">売上金額3,000円未満</span>
+                                    <span class="option-value">-160円</span>
+                                </div>
+                                <div class="fee-option">
+                                    <span class="option-label">売上金額3,000円以上</span>
+                                    <span class="option-value">無料</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -192,4 +185,5 @@
     <script src="src/js/imageGenerator.js"></script>
     <script src="src/js/main.js"></script>
 </body>
+
 </html>
