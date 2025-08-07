@@ -4,9 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>コンテンツ販売手取り額計算 - note・tips・Brain・ココナラ</title>
-    <meta name="description" content="note、tips、Brain、ココナラコンテンツマーケットの手数料を一括計算し、手取り額を比較できるツールです。">
-
+    <title>コンテンツ販売プラットフォームの手取り額計算ツール</title>
+    <meta name="description" content="note・tips・Brain・ココナラコンテンツマーケットそれぞれの販売手数料を引いて、実際に自分のもとに残る手取り額を計算・比較できるツールです。">
+    <meta name=”twitter:card” content=summary_large_image />
+    <meta name=”twitter:site” content=”@seri_nonnon />
+    <!-- <meta name=”twitter:domain” content=”ドメイン名” /> -->
+    <meta name=”twitter:title” content=”コンテンツ販売プラットフォームの手取り額比較計算ツール” />
+    <meta name=”twitter:description” content="note・tips・Brain・ココナラコンテンツマーケットそれぞれの販売手数料を引いて、実際に自分のもとに残る手取り額を計算・比較できるツールです。" />
+    <meta name=”twitter:image” content=”assets/images/sample.webp” />
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 
@@ -15,13 +20,16 @@
     <link rel="stylesheet" href="src/css/components.css">
     <link rel="stylesheet" href="src/css/responsive.css">
 
+
+
 </head>
 
 <body>
     <main class="main-container">
         <!-- ヘッダー -->
         <header class="header">
-            <h1 class="header-title">コンテンツ販売手取り額計算</h1>
+
+            <h1 class="header-title">コンテンツ販売プラットフォームの手取り額計算ツール</h1>
             <p class="header-subtitle">note・tips・Brain・ココナラの手数料を一括比較</p>
         </header>
         <!-- 入力フォーム -->
@@ -34,18 +42,18 @@
                     <span class="input-unit">円</span>
                     <button type="button" id="calculate-btn" class="calculate-btn">計算</button>
                 </div>
-                            <div class="results-header">
-                <h2 id="results-title" class="results-title">販売価格を入力して「計算する」を押してください</h2>
-            </div>
+                <div class="results-header">
+                    <h2 id="results-title" class="results-title">販売価格を入力して「計算する」を押してください</h2>
+                </div>
                 <div id="input-error" class="error-message" style="display: none;"></div>
             </div>
-            
+
         </section>
 
         <!-- 計算結果表示エリア -->
         <section class="results-section" id="results-section">
 
-            
+
             <div class="results-container">
                 <!-- note card -->
                 <div class="platform-card note-card">
