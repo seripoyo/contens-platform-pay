@@ -17,7 +17,7 @@
  * @returns {NoteResult} 計算結果
  */
 function calculateNote(price) {
-    const transferFee = 270; // 振込手数料（固定）
+    const transferFee = 0; // 振込手数料（固定）
     
     // 決済方法別の手数料計算
     const paymentMethods = [
@@ -84,8 +84,8 @@ function calculateTips(price) {
     const afterFee = price - contentFee;
     
     // 振込手数料
-    const transferFeeNormal = 550; // 通常会員
-    const transferFeePlus = 330;   // プラス会員
+    const transferFeeNormal = 0; // 通常会員
+    const transferFeePlus = 0;   // プラス会員
     
     // 最終手取り額
     const netAmountNormal = Math.max(0, afterFee - transferFeeNormal);
@@ -115,7 +115,7 @@ function calculateBrain(price) {
     const afterFee = price - contentFee;
     
     // 出金手数料（275円固定）
-    const withdrawalFee = 275;
+    const withdrawalFee = 0;
     
     // 最終手取り額
     const netAmount = Math.max(0, afterFee - withdrawalFee);
@@ -140,7 +140,7 @@ function calculateCoconala(price) {
     const afterFee = price - salesFee;
     
     // 振込手数料（売上金額により変動）
-    const transferFeeUnder3000 = 160; // 3,000円未満
+    const transferFeeUnder3000 = 0; // 3,000円未満
     const transferFeeOver3000 = 0;    // 3,000円以上
     
     // 3,000円基準での手取り額計算
