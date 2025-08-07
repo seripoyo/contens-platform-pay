@@ -281,7 +281,7 @@ function displayCalculationResults(results) {
     logger.group('結果表示');
     
     // タイトル更新
-    const titleText = `${formatPrice(results.price)}（税抜き）で販売した際の手取り額`;
+    const titleText = `${formatPrice(results.price)}で販売した際の手取り額`;
     setElementText('results-title', titleText);
     logger.log('Display', 'タイトル更新', { title: titleText });
     
@@ -607,7 +607,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ページ離脱前の確認（計算結果がある場合）
 window.addEventListener('beforeunload', function(e) {
     const resultsTitle = document.getElementById('results-title')?.textContent || '';
-    const hasResults = resultsTitle.includes('円（税抜き）で販売した際の');
+    const hasResults = resultsTitle.includes('円で販売した際の');
     
     logger.log('Unload', 'ページ離脱確認', { hasResults: hasResults });
     
