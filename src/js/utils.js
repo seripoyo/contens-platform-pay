@@ -246,6 +246,194 @@ function debounce(func, wait) {
 }
 
 /**
+ * リアルタイムバリデーション用の入力チェック
+ * @param {HTMLInputElement} inputElement - 入力要素
+ * @param {Function} callback - バリデーション結果のコールバック
+ */
+function setupRealTimeValidation(inputElement, callback) {
+    if (!inputElement || typeof callback !== 'function') return;
+    
+    const debouncedValidation = debounce((value) => {
+        const validation = validatePriceRange(value);
+        callback(validation);
+    }, 300);
+    
+    inputElement.addEventListener('input', function(e) {
+        const value = e.target.value.trim();
+        
+        // 空の場合はエラーを隠す
+        if (value === '') {
+            callback({ isValid: true, message: '' });
+            return;
+        }
+        
+        // デバウンス処理でバリデーション実行
+        debouncedValidation(value);
+    });
+    
+    // フォーカス外れた時の即座のバリデーション
+    inputElement.addEventListener('blur', function(e) {
+        const value = e.target.value.trim();
+        if (value !== '') {
+            const validation = validatePriceRange(value);
+            callback(validation);
+        }
+    });
+}
+
+/**
+ * フォームの送信を防ぐ（Enterキー対応）
+ * @param {HTMLFormElement|HTMLInputElement} element - 対象要素
+ */
+function preventFormSubmission(element) {
+    if (!element) return;
+    
+    element.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            
+            // 計算ボタンがある場合はクリックイベントを発火
+            const calculateBtn = document.getElementById('calculate-btn');
+            if (calculateBtn && !calculateBtn.disabled) {
+                calculateBtn.click();
+            }
+        }
+    });
+}
+
+/**
+ * 入力値の正規化（全角数字を半角に変換等）
+ * @param {string} value - 入力値
+ * @returns {string} 正規化された値
+ */
+function normalizeInput(value) {
+    if (typeof value !== 'string') return '';
+    
+    return value
+        .replace(/[０-９]/g, function(match) {
+            return String.fromCharCode(match.charCodeAt(0) - 0xFEE0);
+        })
+        .replace(/[^\d]/g, '')
+        .replace(/^0+/, '') || '0';
+}
+
+/**
+ * 入力フィールドの値を取得して正規化
+ * @param {string} elementId - 要素のID
+ * @returns {string} 正規化された入力値
+ */
+function getNormalizedInputValue(elementId) {
+    const element = document.getElementById(elementId);
+    if (!element) return '';
+    
+    const rawValue = element.value || '';
+    return normalizeInput(rawValue);
+}
+
+/**
+ * カスタムバリデーションルールの追加
+ * @param {string} ruleName - ルール名
+ * @param {Function} validator - バリデーション関数
+ */
+const customValidationRules = new Map();
+
+function addValidationRule(ruleName, validator) {
+    if (typeof ruleName !== 'string' || typeof validator !== 'function') {
+        return false;
+    }
+    
+    customValidationRules.set(ruleName, validator);
+    return true;
+}
+
+/**
+ * カスタムルールを含む拡張バリデーション
+ * @param {string|number} value - バリデーション対象の値
+ * @param {Array<string>} rules - 適用するルール名の配列
+ * @returns {object} バリデーション結果
+ */
+function validateWithCustomRules(value, rules = []) {
+    // 基本バリデーション
+    const baseResult = validatePriceRange(value);
+    if (!baseResult.isValid) {
+        return baseResult;
+    }
+    
+    // カスタムルールの適用
+    for (const ruleName of rules) {
+        const validator = customValidationRules.get(ruleName);
+        if (validator) {
+            const result = validator(value);
+            if (!result.isValid) {
+                return result;
+            }
+        }
+    }
+    
+    return { isValid: true, message: '' };
+}
+
+/**
+ * フィールドごとのバリデーション状態管理
+ */
+const validationState = new Map();
+
+/**
+ * バリデーション状態を設定
+ * @param {string} fieldId - フィールドID
+ * @param {boolean} isValid - バリデーション結果
+ * @param {string} message - エラーメッセージ
+ */
+function setValidationState(fieldId, isValid, message = '') {
+    validationState.set(fieldId, { isValid, message });
+    
+    // UI更新
+    updateFieldValidationUI(fieldId, isValid, message);
+}
+
+/**
+ * 全フィールドのバリデーション状態をチェック
+ * @returns {boolean} 全フィールドが有効かどうか
+ */
+function areAllFieldsValid() {
+    for (const [fieldId, state] of validationState) {
+        if (!state.isValid) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * フィールドのバリデーション状態をUIに反映
+ * @param {string} fieldId - フィールドID
+ * @param {boolean} isValid - バリデーション結果
+ * @param {string} message - エラーメッセージ
+ */
+function updateFieldValidationUI(fieldId, isValid, message) {
+    const field = document.getElementById(fieldId);
+    const errorElement = document.getElementById(`${fieldId}-error`);
+    
+    if (field) {
+        if (isValid) {
+            field.classList.remove('invalid');
+            field.classList.add('valid');
+        } else {
+            field.classList.remove('valid');
+            field.classList.add('invalid');
+        }
+    }
+    
+    if (errorElement) {
+        if (isValid || message === '') {
+            hideError(`${fieldId}-error`);
+        } else {
+            showError(`${fieldId}-error`, message);
+        }
+    }
+}
+
+/**
  * エラーログを出力する（開発用）
  * @param {string} context - エラーのコンテキスト
  * @param {Error} error - エラーオブジェクト
@@ -284,5 +472,14 @@ window.Utils = {
     restrictToNumbers,
     debounce,
     logError,
-    safeDOM
+    safeDOM,
+    setupRealTimeValidation,
+    preventFormSubmission,
+    normalizeInput,
+    getNormalizedInputValue,
+    addValidationRule,
+    validateWithCustomRules,
+    setValidationState,
+    areAllFieldsValid,
+    updateFieldValidationUI
 };
