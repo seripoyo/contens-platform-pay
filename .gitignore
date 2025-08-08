@@ -16,6 +16,7 @@ Thumbs.db
 
 # Claude Code files
 .claude/
+CLAUDE.md
 
 # Logs
 *.log
