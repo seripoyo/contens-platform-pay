@@ -89,31 +89,137 @@ function getOrCreateCanvas() {
 }
 
 /**
+ * フォント読み込み完了を確認する関数
+ */
+function ensureFontsLoaded() {
+    return new Promise((resolve, reject) => {
+        // フォントが利用可能かどうか確認
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                // NotoSansJPが読み込まれているか確認
+                const testCanvas = document.createElement('canvas');
+                const testCtx = testCanvas.getContext('2d');
+                
+                testCtx.font = '32px "NotoSansJP"';
+                const notoWidth = testCtx.measureText('テスト').width;
+                
+                testCtx.font = '32px serif';
+                const serifWidth = testCtx.measureText('テスト').width;
+                
+                // 幅が異なれば NotoSansJP が正常に読み込まれている
+                if (Math.abs(notoWidth - serifWidth) > 1) {
+                    resolve();
+                } else {
+                    // フォールバック処理
+                    loadFontFallback().then(resolve).catch(reject);
+                }
+            }).catch(() => {
+                loadFontFallback().then(resolve).catch(reject);
+            });
+        } else {
+            // Font Loading API が利用できない場合
+            loadFontFallback().then(resolve).catch(reject);
+        }
+    });
+}
+
+/**
+ * フォントフォールバック読み込み
+ */
+function loadFontFallback() {
+    return new Promise((resolve, reject) => {
+        // CSS @font-faceを動的に作成
+        const style = document.createElement('style');
+        style.textContent = `
+            @font-face {
+                font-family: 'NotoSansJPCanvas';
+                src: url('src/fonts/NotoSansJP/NotoSansJP-Bold.woff2') format('woff2'),
+                     url('src/fonts/NotoSansJP/NotoSansJP-Bold.woff') format('woff');
+                font-weight: bold;
+                font-display: block;
+            }
+            @font-face {
+                font-family: 'NotoSansJPCanvas';
+                src: url('src/fonts/NotoSansJP/NotoSansJP-Regular.woff2') format('woff2'),
+                     url('src/fonts/NotoSansJP/NotoSansJP-Regular.woff') format('woff');
+                font-weight: normal;
+                font-display: block;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // フォント読み込み待機（最大3秒）
+        let attempts = 0;
+        const maxAttempts = 30;
+        
+        const checkFont = () => {
+            attempts++;
+            
+            const testCanvas = document.createElement('canvas');
+            const testCtx = testCanvas.getContext('2d');
+            
+            testCtx.font = 'bold 32px "NotoSansJPCanvas", "Noto Sans JP", sans-serif';
+            const canvasWidth = testCtx.measureText('テスト').width;
+            
+            testCtx.font = 'bold 32px serif';
+            const serifWidth = testCtx.measureText('テスト').width;
+            
+            if (Math.abs(canvasWidth - serifWidth) > 1 || attempts >= maxAttempts) {
+                resolve();
+            } else {
+                setTimeout(checkFont, 100);
+            }
+        };
+        
+        checkFont();
+    });
+}
+
+/**
  * 背景画像を読み込んで描画
  */
 function loadBackgroundAndDraw(ctx, canvas, results) {
-    const bgImage = new Image();
-    bgImage.crossOrigin = 'anonymous';
-    bgImage.src = 'assets/images/format.jpg';
-    
-    bgImage.onload = function() {
+    // フォント読み込み完了を待つ
+    ensureFontsLoaded().then(() => {
+        const bgImage = new Image();
+        bgImage.crossOrigin = 'anonymous';
+        bgImage.src = 'assets/images/format.jpg';
         
-        // 背景画像を描画
-        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+        bgImage.onload = function() {
+            
+            // 背景画像を描画
+            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+            
+            // コンテンツを描画
+            drawResultsOnBackground(ctx, canvas, results);
+            
+            // ダウンロード処理
+            downloadCanvasAsImage(canvas);
+        };
         
-        // コンテンツを描画
-        drawResultsOnBackground(ctx, canvas, results);
+        bgImage.onerror = function() {
+            
+            // フォールバック: 背景画像なしで描画
+            drawResultsWithoutBackground(ctx, canvas, results);
+            downloadCanvasAsImage(canvas);
+        };
+    }).catch(() => {
+        // フォント読み込みに失敗した場合もそのまま描画
+        const bgImage = new Image();
+        bgImage.crossOrigin = 'anonymous';
+        bgImage.src = 'assets/images/format.jpg';
         
-        // ダウンロード処理
-        downloadCanvasAsImage(canvas);
-    };
-    
-    bgImage.onerror = function() {
+        bgImage.onload = function() {
+            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+            drawResultsOnBackground(ctx, canvas, results);
+            downloadCanvasAsImage(canvas);
+        };
         
-        // フォールバック: 背景画像なしで描画
-        drawResultsWithoutBackground(ctx, canvas, results);
-        downloadCanvasAsImage(canvas);
-    };
+        bgImage.onerror = function() {
+            drawResultsWithoutBackground(ctx, canvas, results);
+            downloadCanvasAsImage(canvas);
+        };
+    });
 }
 
 /**
@@ -126,7 +232,7 @@ function drawResultsOnBackground(ctx, canvas, results) {
     ctx.fillStyle = '#006666';
     
     // タイトル（中央上部） - 20px下げる
-    ctx.font = 'bold 72px "NotoSansJP"';
+    ctx.font = 'bold 72px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     const titleText = formatCurrency(results.price) + '円で販売した際の手取り額';
     ctx.fillText(titleText, canvas.width / 2, 140);
     
@@ -149,17 +255,17 @@ function drawNoteSection(ctx, data) {
     // タイトルと手取り額を同じ行に表示
     ctx.textAlign = 'left';
     ctx.fillStyle = '#008080';
-    ctx.font = 'bold 52px "NotoSansJP"';
+    ctx.font = 'bold 52px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     ctx.fillText('note :', contentX, contentY);
     
     // 手取り額範囲
     ctx.fillStyle = '#008080';
-    ctx.font = '52px "NotoSansJP"';
+    ctx.font = '52px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     ctx.fillText(`${formatCurrency(data.minAmount)}円～${formatCurrency(data.maxAmount)}円`, contentX + 180, contentY);
     
     // noteの黒字は23.9px
     ctx.fillStyle = '#333333';
-    ctx.font = '23.9px "NotoSansJP"';
+    ctx.font = '23.9px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     let yPos = contentY + 90;
     
     // プラットフォーム利用料
@@ -194,7 +300,7 @@ function drawTipsSection(ctx, data) {
     // タイトルと手取り額
     ctx.textAlign = 'left';
     ctx.fillStyle = '#008080';
-    ctx.font = 'bold 52px "NotoSansJP"';
+    ctx.font = 'bold 52px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     ctx.fillText('tips :', contentX, contentY);
     
     ctx.fillStyle = '#008080';
@@ -202,7 +308,7 @@ function drawTipsSection(ctx, data) {
     
     // それ以外の黒字は20.9px
     ctx.fillStyle = '#333333';
-    ctx.font = '20.9px "NotoSansJP"';
+    ctx.font = '20.9px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     let yPos = contentY + 60;
     
     ctx.fillText(`● コンテンツ販売料：-${formatCurrency(data.contentFee)}円`, contentX, yPos);
@@ -227,7 +333,7 @@ function drawBrainSection(ctx, data) {
     // タイトルと手取り額
     ctx.textAlign = 'left';
     ctx.fillStyle = '#008080';
-    ctx.font = 'bold 52px "NotoSansJP"';
+    ctx.font = 'bold 52px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     ctx.fillText('Brain :', contentX, contentY);
     
     ctx.fillStyle = '#008080';
@@ -235,7 +341,7 @@ function drawBrainSection(ctx, data) {
     
     // それ以外の黒字は20.9px
     ctx.fillStyle = '#333333';
-    ctx.font = '20.9px "NotoSansJP"';
+    ctx.font = '20.9px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     let yPos = contentY + 60;
     
     ctx.fillText(`● コンテンツ販売料：-${formatCurrency(data.contentFee)}円`, contentX, yPos);
@@ -254,16 +360,16 @@ function drawCoconalaSection(ctx, data) {
     // タイトル
     ctx.textAlign = 'left';
     ctx.fillStyle = '#008080';
-    ctx.font = 'bold 52px "NotoSansJP"';
+    ctx.font = 'bold 52px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     ctx.fillText('ココナラコンテンツマーケット :', contentX, contentY);
     
     ctx.fillStyle = '#008080';
-    ctx.font = '52px "NotoSansJP"';
+    ctx.font = '52px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     ctx.fillText(`${formatCurrency(data.netAmount)}円`, contentX, contentY + 60);
     
     // それ以外の黒字は20.9px
     ctx.fillStyle = '#333333';
-    ctx.font = '20.9px "NotoSansJP"';
+    ctx.font = '20.9px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     let yPos = contentY + 120;
     
     ctx.fillText(`● コンテンツ販売料：-${formatCurrency(data.salesFee)}円`, contentX, yPos);
@@ -616,18 +722,18 @@ function drawNoteSection(ctx, data) {
     // タイトルと手取り額を太字で表示
     ctx.textAlign = 'left';
     ctx.fillStyle = '#008080';
-    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     const titleText = 'note:';
     ctx.fillText(titleText, settings.contentX, settings.contentY);
     
     // 手取り額範囲（太字、空白を削除）
     const titleWidth = ctx.measureText(titleText).width;
     ctx.fillStyle = '#008080';
-    ctx.font = `bold ${settings.rangeFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.rangeFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     ctx.fillText(`${formatCurrency(data.minAmount)}円～${formatCurrency(data.maxAmount)}円`, settings.contentX + titleWidth + 5, settings.contentY);
     
     // 項目詳細（太字）
-    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     let yPos = settings.contentY + settings.platformFeeY;
     
     // プラットフォーム利用料（太字、マイナス部分は赤）
@@ -650,7 +756,7 @@ function drawNoteSection(ctx, data) {
             
             // 決済方法名（太字、黒）
             ctx.fillStyle = '#333333';
-            ctx.font = `bold ${settings.detailFontSize}px "NotoSansJP"`;
+            ctx.font = `bold ${settings.detailFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
             ctx.fillText(`· ${methodName} `, settings.contentX, yPos);
             let currentX = settings.contentX + ctx.measureText(`· ${methodName} `).width;
             
@@ -669,7 +775,7 @@ function drawNoteSection(ctx, data) {
             ctx.fillText(`：${formatCurrency(method.finalNetAmount)}円`, currentX, yPos);
         } else {
             ctx.fillStyle = '#333333';
-            ctx.font = `bold ${settings.detailFontSize}px "NotoSansJP"`;
+            ctx.font = `bold ${settings.detailFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
             ctx.fillText(`· ${methodName}`, settings.contentX, yPos);
         }
         yPos += settings.methodSpacing;
@@ -693,18 +799,18 @@ function drawTipsSection(ctx, data) {
     // タイトルと手取り額を太字で表示
     ctx.textAlign = 'left';
     ctx.fillStyle = '#008080';
-    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     const titleText = 'tips:';
     ctx.fillText(titleText, settings.contentX, settings.contentY);
     
     // 手取り額（太字、空白を削除）
     const titleWidth = ctx.measureText(titleText).width;
     ctx.fillStyle = '#008080';
-    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     ctx.fillText(`${formatCurrency(data.netAmount)}円`, settings.contentX + titleWidth + 5, settings.contentY);
     
     // 項目詳細（太字）
-    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     let yPos = settings.contentY + 60;
     
     // コンテンツ販売料（太字、マイナス部分は赤）
@@ -721,7 +827,7 @@ function drawTipsSection(ctx, data) {
     yPos += settings.spacing;
     
     // インデントされた項目
-    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     ctx.fillText(`　· 通常会員: 550円`, settings.contentX, yPos);
     yPos += settings.spacing;
     ctx.fillText(`　· プラス会員: 330円`, settings.contentX, yPos);
@@ -736,18 +842,18 @@ function drawBrainSection(ctx, data) {
     // タイトルと手取り額を太字で表示
     ctx.textAlign = 'left';
     ctx.fillStyle = '#008080';
-    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     const titleText = 'Brain:';
     ctx.fillText(titleText, settings.contentX, settings.contentY);
     
     // 手取り額（太字、空白を削除）
     const titleWidth = ctx.measureText(titleText).width;
     ctx.fillStyle = '#008080';
-    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     ctx.fillText(`${formatCurrency(data.netAmount)}円`, settings.contentX + titleWidth + 5, settings.contentY);
     
     // 項目詳細（太字）
-    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     let yPos = settings.contentY + 60;
     
     // コンテンツ販売料（太字、マイナス部分は赤）
@@ -775,18 +881,18 @@ function drawCoconalaSection(ctx, data) {
     // タイトルと手取り額を太字で表示
     ctx.textAlign = 'left';
     ctx.fillStyle = '#008080';
-    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     const titleText = 'ココナラコンテンツマーケット:';
     ctx.fillText(titleText, settings.contentX, settings.contentY);
     
     // 手取り額（太字、空白を削除して同じ行に）
     const titleWidth = ctx.measureText(titleText).width;
     ctx.fillStyle = '#008080';
-    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.titleFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     ctx.fillText(`${formatCurrency(data.netAmount)}円`, settings.contentX + titleWidth + 10, settings.contentY);
     
     // 項目詳細（太字）
-    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     let yPos = settings.contentY + 60;
     
     // コンテンツ販売料（太字、マイナス部分は赤）
@@ -803,7 +909,7 @@ function drawCoconalaSection(ctx, data) {
     yPos += settings.spacing;
     
     // インデントされた項目
-    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJP"`;
+    ctx.font = `bold ${settings.detailFontSize}px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif`;
     ctx.fillText(`　· 売上金額3,000円未満: 160円`, settings.contentX, yPos);
     yPos += settings.spacing;
     ctx.fillText(`　· 売上金額3,000円以上: 無料`, settings.contentX, yPos);
