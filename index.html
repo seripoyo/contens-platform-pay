@@ -20,7 +20,18 @@
     <meta name="twitter:description" content="note・tips・Brain・ココナラの各販売手数料を引いた、手元に残る金額を計算・比較できるツールです。" />
     <meta name="twitter:image" content="assets/images/Net_Salay_OGP.jpg" />
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com;">
+
+    <!-- Google tag (gtag.js) -->
+    <!-- 注意: 以下のG-XXXXXXXXXXを実際の測定IDに置き換えてください -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 
@@ -242,11 +253,22 @@
         </div>
     </footer>
 
+
     <!-- JavaScript -->
     <script src="src/js/utils.js"></script>
     <script src="src/js/calculator.js"></script>
     <script src="src/js/imageGenerator.js"></script>
     <script src="src/js/main.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-25SNDXZ4X5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-25SNDXZ4X5');
+    </script>
 </body>
 
 </html>
