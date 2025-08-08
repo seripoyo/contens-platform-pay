@@ -180,7 +180,7 @@ function drawNoteSection(ctx, data) {
     
     // 最後に振込手数料を表示
     yPos += 45; // 空白行を作る
-    ctx.fillText(`● 振込手数料（1回あたり）：-270円`, contentX, yPos);
+    ctx.fillText(`● 振込手数料（1回あたり）：270円`, contentX, yPos);
 }
 
 /**
@@ -240,7 +240,7 @@ function drawBrainSection(ctx, data) {
     
     ctx.fillText(`● コンテンツ販売料：-${formatCurrency(data.contentFee)}円`, contentX, yPos);
     yPos += 40;
-    ctx.fillText(`● 振込手数料（1回あたり）：-275円`, contentX, yPos);
+    ctx.fillText(`● 振込手数料（1回あたり）：275円`, contentX, yPos);
 }
 
 /**
@@ -309,7 +309,7 @@ function drawNoteDetails(ctx, data, x, y) {
     ctx.fillText(`● プラットフォーム利用料：-${formatCurrency(data.platformFee)}円`, x, y);
     
     // 振込手数料
-    ctx.fillText(`● 振込手数料（1回あたり）：-270円`, x, y + 40);
+    ctx.fillText(`● 振込手数料（1回あたり）：270円`, x, y + 40);
     
     // 決済方法別
     ctx.font = '24px Arial, sans-serif';
@@ -366,7 +366,7 @@ function drawBrainDetails(ctx, data, x, y) {
     ctx.fillText(`● コンテンツ販売料：-${formatCurrency(data.contentFee)}円`, x, y);
     
     // 振込手数料
-    ctx.fillText(`● 振込手数料（1回あたり）：-275円`, x, y + 40);
+    ctx.fillText(`● 振込手数料（1回あたり）：275円`, x, y + 40);
 }
 
 /**
