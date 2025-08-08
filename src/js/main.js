@@ -137,6 +137,15 @@ function setupEventListeners(priceInput, calculateBtn, saveImageBtn) {
         });
     }
     
+    // プレビューボタンのクリックイベント
+    const previewImageBtn = document.getElementById('preview-image-btn');
+    if (previewImageBtn) {
+        previewImageBtn.addEventListener('click', function() {
+            logger.log('Event', 'プレビューボタンクリック');
+            handlePreviewImage();
+        });
+    }
+    
     // 入力フィールドのフォーカスイベント
     priceInput.addEventListener('focus', function() {
         logger.log('Event', '入力フィールドフォーカス');
@@ -687,3 +696,25 @@ window.testImageGeneration = function() {
         return false;
     }
 };
+
+/**
+ * プレビュー画像表示ハンドラー
+ */
+function handlePreviewImage() {
+    logger.log('Preview', 'プレビュー画像表示開始');
+    
+    try {
+        if (typeof window.generatePreviewImage !== 'function') {
+            throw new Error('プレビュー機能が利用できません');
+        }
+        
+        // プレビュー画像を生成・表示
+        window.generatePreviewImage();
+        
+        logger.log('Preview', 'プレビュー画像表示完了');
+        
+    } catch (error) {
+        logger.error('Preview', 'プレビュー表示エラー', error);
+        showError('input-error', 'プレビュー表示に失敗しました: ' + error.message);
+    }
+}
