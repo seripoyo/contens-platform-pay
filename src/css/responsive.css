@@ -227,7 +227,7 @@
     }
 
     .sample-preview {
-        max-width: 150px;
+        max-width: 100%;
     }
 
     .save-section-inline .save-image-btn {
@@ -454,5 +454,58 @@
     .calculate-btn,
     .save-image-btn {
         border: 2px solid #000000;
+    }
+}
+
+/* Footerレスポンシブ対応 */
+@media screen and (max-width: 767px) {
+    .sample-image{
+        width: 100%;
+    }
+    .footer-top {
+        flex-direction: column;
+        gap: 30px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 25px;
+        width: 100%;
+    }
+    
+    .footer-logo {
+        order: 1;
+    }
+    
+    .footer-links {
+        order: 2;
+    }
+    
+    .footer-message {
+        order: 3;
+    }
+    
+    .footer-social {
+        order: 4;
+    }
+    
+    .footer-logo-img {
+        height: 35px;
+    }
+    
+    .footer-message-img {
+        max-width: 100%;
+    }
+    
+    .footer-x-logo {
+        height: 20px;
+    }
+    
+    .disclaimer-text {
+        font-size: 11px;
+        text-align: left;
+        padding: 0 10px;
     }
 }

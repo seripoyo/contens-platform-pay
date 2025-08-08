@@ -135,7 +135,7 @@ span.fee-label.note-fee-label {
 }
 
 .fee-value {
-    font-size: var(--font-size-body);
+    font-size: var(--font-size-component);
     font-weight: var(--font-weight-bold);
     color: var(--error-color);
     font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
@@ -165,6 +165,7 @@ span.fee-label.note-fee-label {
 
 .option-label {
     color: var(--text-muted);
+    font-size:var(--font-size-component);
     font-weight: var(--font-weight-regular);
     line-height: var(--line-height-normal);
         font-size: var(--font-size-caption);
