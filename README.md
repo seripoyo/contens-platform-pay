@@ -4,7 +4,7 @@
 
 <!-- シールド一覧 -->
 <p style="display: inline">
-  <img src="https://img.shields.io/badge/-Html5-E34F26.svg?logo=html5&style=for-the-badge">
+  <img src="https://img.shields.io/badge/-Html5-E34F26.svg?logo=html5&style=plastic">
   <img src="https://img.shields.io/badge/-CSS3-1572B6.svg?logo=css3&style=for-the-badge">
   <img src="https://img.shields.io/badge/-JavaScript-F7DF1E.svg?logo=javascript&style=for-the-badge&logoColor=black">
   <img src="https://img.shields.io/badge/-Canvas%20API-FF6B35.svg?logo=html5&style=for-the-badge">
