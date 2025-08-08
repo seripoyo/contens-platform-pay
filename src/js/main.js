@@ -143,6 +143,15 @@ function handleCalculate() {
         return;
     }
     
+    // Googleアナリティクス: 計算ボタンクリックイベント
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'calculate_button_click', {
+            'event_category': 'user_action',
+            'event_label': 'price_calculation',
+            'value': parseToSafeNumber(inputValue)
+        });
+    }
+    
     // ローディング状態開始
     setLoadingState(true);
     hideError('input-error');

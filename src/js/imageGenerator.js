@@ -517,6 +517,15 @@ function downloadCanvasAsImage(canvas) {
             // sample.jpgのフォーマットに準拠したファイル名（英数字のみ）
             const filename = `tetoridaka-hikaku_${year}${month}${day}_${hour}${minute}.jpg`;
             
+            // Googleアナリティクス: 画像保存ボタンクリックイベント
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'save_image_click', {
+                    'event_category': 'user_action',
+                    'event_label': 'download_result_image',
+                    'value': 1
+                });
+            }
+            
             // ダウンロードリンクを作成
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
