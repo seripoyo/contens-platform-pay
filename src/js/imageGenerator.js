@@ -233,7 +233,12 @@ function drawResultsOnBackground(ctx, canvas, results) {
     
     // タイトル（中央上部） - 20px下げる
     ctx.font = 'bold 72px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
-    const titleText = formatCurrency(results.price) + '円で販売した際の手取り額';
+    let titleText;
+    if (results.quantity && results.unitPrice) {
+        titleText = formatCurrency(results.unitPrice) + '円×' + results.quantity + '本 販売時の手取り額';
+    } else {
+        titleText = formatCurrency(results.price) + '円 販売時の手取り額';
+    }
     ctx.fillText(titleText, canvas.width / 2, 140);
     
     // 各プラットフォームのコンテンツを描画
@@ -519,11 +524,20 @@ function downloadCanvasAsImage(canvas) {
             
             // Googleアナリティクス: 画像保存ボタンクリックイベント
             if (typeof gtag !== 'undefined') {
+                console.log('GA Event: 画像保存ボタンクリック', {
+                    event: 'save_image_click',
+                    category: 'user_action',
+                    label: 'download_result_image',
+                    value: 1
+                });
+                
                 gtag('event', 'save_image_click', {
                     'event_category': 'user_action',
                     'event_label': 'download_result_image',
                     'value': 1
                 });
+            } else {
+                console.warn('Google Analytics (gtag) が読み込まれていません');
             }
             
             // ダウンロードリンクを作成
@@ -653,9 +667,11 @@ function getTestCalculationData() {
 function generatePreviewImage() {
     
     try {
-        // 入力された金額を取得
+        // 入力された金額と本数を取得
         const priceInput = document.getElementById('price-input');
+        const quantityInput = document.getElementById('quantity-input');
         let inputPrice = null;
+        let inputQuantity = 1;
         
         if (priceInput && priceInput.value && !isNaN(priceInput.value) && parseInt(priceInput.value) > 0) {
             inputPrice = parseInt(priceInput.value);
@@ -664,8 +680,19 @@ function generatePreviewImage() {
             return;
         }
         
-        // 入力された金額で計算を実行
-        const testData = calculateAllPlatforms(inputPrice);
+        if (quantityInput && quantityInput.value && !isNaN(quantityInput.value) && parseInt(quantityInput.value) > 0) {
+            inputQuantity = parseInt(quantityInput.value);
+        }
+        
+        // 総売上を計算
+        const totalAmount = inputPrice * inputQuantity;
+        
+        // 総売上で計算を実行
+        const testData = calculateAllPlatforms(totalAmount);
+        
+        // 単価と本数情報を追加
+        testData.unitPrice = inputPrice;
+        testData.quantity = inputQuantity;
         
         // ココナラのY位置を790に設定
         window.previewSettings.coconala.contentY = 790;
@@ -873,12 +900,12 @@ function drawBrainSection(ctx, data) {
     ctx.fillText(`-${formatCurrency(data.contentFee)}円`, settings.contentX + contentFeeText, yPos);
     yPos += settings.spacing;
     
-    // 振込手数料（太字、マイナス部分は赤）
+    // 振込手数料（太字、黒色）
     ctx.fillStyle = '#333333';
     ctx.fillText(`· 振込手数料（1回あたり）：`, settings.contentX, yPos);
     const transferFeeText = ctx.measureText(`· 振込手数料（1回あたり）：`).width;
-    ctx.fillStyle = '#d32f2f'; // 赤色
-    ctx.fillText(`-275円`, settings.contentX + transferFeeText, yPos);
+    ctx.fillStyle = '#333333'; // 黒色
+    ctx.fillText(`275円`, settings.contentX + transferFeeText, yPos);
 }
 
 /**
@@ -940,31 +967,34 @@ function replaceSampleImageWithCanvas(testData) {
         return;
     }
     
-    // 既存のimg要素を取得
+    // 既存のcanvasまたはimg要素を取得
+    let sampleCanvas = sampleImageDiv.querySelector('canvas');
     const existingImg = sampleImageDiv.querySelector('img');
     
-    if (!existingImg) {
-        return;
+    if (!sampleCanvas) {
+        // canvasが存在しない場合は新規作成
+        if (!existingImg) {
+            return;
+        }
+        
+        sampleCanvas = document.createElement('canvas');
+        sampleCanvas.width = 1920;
+        sampleCanvas.height = 1080;
+        sampleCanvas.className = 'sample-preview';
+        sampleCanvas.style.cssText = `
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        `;
+        
+        // imgをcanvasに置換
+        sampleImageDiv.replaceChild(sampleCanvas, existingImg);
     }
     
-    // 新しいcanvasを作成
-    const sampleCanvas = document.createElement('canvas');
-    sampleCanvas.width = 1920;
-    sampleCanvas.height = 1080;
-    sampleCanvas.className = 'sample-preview';
-    sampleCanvas.style.cssText = `
-        max-width: 100%;
-        height: auto;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    `;
-    
-    
-    // imgをcanvasに置換
-    sampleImageDiv.replaceChild(sampleCanvas, existingImg);
-    
-    // canvasにコンテンツを描画
+    // canvasにコンテンツを描画（既存のcanvasの場合はクリアして再描画）
     const ctx = sampleCanvas.getContext('2d');
+    ctx.clearRect(0, 0, sampleCanvas.width, sampleCanvas.height);
     
     // format.jpgを背景として読み込んで描画
     const bgImage = new Image();
