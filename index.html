@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Net Salary - コンテンツ販売プラットフォームの手取り額計算ツール</title>
     <meta name="description" content="note・tips・Brain・ココナラの各販売手数料を引いた、手元に残る金額を計算・比較できるツールです。">
+    
+    <!-- キャッシュ制御 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta property="og:url" content="https://net-salary.seripoyo.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Net Salary - コンテンツ販売プラットフォームの手取り額計算ツール" />
@@ -35,9 +40,9 @@
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="src/css/style.css">
-    <link rel="stylesheet" href="src/css/components.css">
-    <link rel="stylesheet" href="src/css/responsive.css">
+    <link rel="stylesheet" href="src/css/style.css?v=1.1">
+    <link rel="stylesheet" href="src/css/components.css?v=1.1">
+    <link rel="stylesheet" href="src/css/responsive.css?v=1.1">
 
 
 
@@ -56,7 +61,7 @@
         <!-- 入力フォーム -->
         <section class="input-section">
             <div class="balloon2">
-                <p>販売したい金額を入力してボタンを押すだけ！</p>
+                <p>販売したい金額と売りたい本数を<br>入力してボタンを押すだけ！</p>
             </div>
             <div class="form-container">
                 <!-- <label for="price-input" class="form-label">販売価格</label> -->
@@ -66,13 +71,15 @@
                             autocomplete="off">
                         <span class="input-unit">円</span>
                     </div>
-                    <div class="quantity-input-wrapper">
+                    <div class="input-cerculate-wrapper">
                         <span class="input-multiply">×</span>
+                    </div>
+                    <div class="quantity-input-wrapper">
                         <input type="number" id="quantity-input" class="quantity-input" placeholder="1" min="1" step="1"
                             autocomplete="off">
                         <span class="input-unit">本</span>
                     </div>
-                    <button type="button" id="calculate-btn" class="calculate-btn">計算</button>
+                    <button type="button" id="calculate-btn" class="calculate-btn">計算する</button>
                 </div>
                 <div class="results-header">
                     <!-- <h2 id="results-title" class="results-title">販売価格を入力して「計算する」を押してください</h2> -->
@@ -147,7 +154,7 @@
                         <img src="assets/images/sample.webp" alt="保存例のプレビュー" class="sample-preview">
                         <p class="sample-label">保存プレビュー</p>
                     </div>
-                    <button type="button" id="save-image-btn" class="save-image-btn">結果を画像で保存</button>
+                    <button type="button" id="save-image-btn" class="save-image-btn">画像で保存する</button>
 
                 </div>
 
@@ -262,10 +269,38 @@
 
 
     <!-- JavaScript -->
-    <script src="src/js/utils.js"></script>
-    <script src="src/js/calculator.js"></script>
-    <script src="src/js/imageGenerator.js"></script>
-    <script src="src/js/main.js"></script>
+    <script src="src/js/utils.js?v=1.1"></script>
+    <script src="src/js/calculator.js?v=1.1"></script>
+    <script src="src/js/imageGenerator.js?v=1.1"></script>
+    <script src="src/js/main.js?v=1.1"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful:', registration.scope);
+                        
+                        // 新しいService Workerが利用可能になったら自動的に更新
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'activated') {
+                                    // 新しいバージョンがアクティブになったらページをリロード
+                                    if (confirm('新しいバージョンが利用可能です。ページを更新しますか？')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed:', err);
+                    });
+            });
+        }
+    </script>
 
 </body>
 
