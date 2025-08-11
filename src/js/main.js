@@ -3,6 +3,11 @@
  * DOM操作、イベントリスナー、画面制御を担当
  */
 
+// 最後の計算結果を保存
+let lastCalculationResults = null;
+
+// デバッグモード（開発時のみtrueに設定）
+const DEBUG_MODE = false;
 
 /**
  * アプリケーション初期化
@@ -29,6 +34,11 @@ function initializeApp() {
     // 初期状態の設定
     setInitialState();
     
+    // デバッグモードの場合、キャッシュクリアボタンを追加
+    if (DEBUG_MODE) {
+        addCacheClearButton();
+    }
+    
 }
 
 /**
@@ -37,11 +47,19 @@ function initializeApp() {
  */
 function setupInputField(priceInput) {
     
+    const quantityInput = document.getElementById('quantity-input');
+    
     // 数値のみ入力許可
     restrictToNumbers(priceInput);
+    if (quantityInput) {
+        restrictToNumbers(quantityInput);
+    }
     
     // Enterキー送信防止
     preventFormSubmission(priceInput);
+    if (quantityInput) {
+        preventFormSubmission(quantityInput);
+    }
     
     // リアルタイムバリデーション設定
     setupRealTimeValidation(priceInput, function(validation) {
@@ -56,6 +74,13 @@ function setupInputField(priceInput) {
             calculateBtn.disabled = !shouldEnable;
         }
     });
+    
+    // 本数入力フィールドのバリデーション
+    if (quantityInput) {
+        setupRealTimeValidation(quantityInput, function(validation) {
+            setValidationState('quantity-input', validation.isValid, validation.message);
+        }, validateQuantityRange);
+    }
     
 }
 
@@ -129,27 +154,49 @@ function setInitialState() {
 function handleCalculate() {
     
     const priceInput = document.getElementById('price-input');
-    if (!priceInput) {
+    const quantityInput = document.getElementById('quantity-input');
+    if (!priceInput || !quantityInput) {
         return;
     }
     
-    const inputValue = getNormalizedInputValue('price-input');
+    const priceValue = getNormalizedInputValue('price-input');
+    const quantityValue = getNormalizedInputValue('quantity-input') || '1';
     
     // 入力値の検証
-    const validation = validatePriceRange(inputValue);
+    const priceValidation = validatePriceRange(priceValue);
+    const quantityValidation = validateQuantityRange(quantityValue);
     
-    if (!validation.isValid) {
-        showError('input-error', validation.message);
+    if (!priceValidation.isValid) {
+        showError('input-error', priceValidation.message);
         return;
     }
+    
+    if (!quantityValidation.isValid) {
+        showError('input-error', quantityValidation.message);
+        return;
+    }
+    
+    // 総売上を計算
+    const price = parseToSafeNumber(priceValue);
+    const quantity = parseToSafeNumber(quantityValue);
+    const totalAmount = price * quantity;
     
     // Googleアナリティクス: 計算ボタンクリックイベント
     if (typeof gtag !== 'undefined') {
+        console.log('GA Event: 計算ボタンクリック', {
+            event: 'calculate_button_click',
+            category: 'user_action',
+            label: 'price_calculation',
+            value: totalAmount
+        });
+        
         gtag('event', 'calculate_button_click', {
             'event_category': 'user_action',
             'event_label': 'price_calculation',
-            'value': parseToSafeNumber(inputValue)
+            'value': totalAmount
         });
+    } else {
+        console.warn('Google Analytics (gtag) が読み込まれていません');
     }
     
     // ローディング状態開始
@@ -159,7 +206,7 @@ function handleCalculate() {
     try {
         // 計算実行（非同期処理として扱う）
         setTimeout(() => {
-            performCalculation(parseToSafeNumber(inputValue));
+            performCalculation(totalAmount, price, quantity);
         }, 100);
         
     } catch (error) {
@@ -171,17 +218,26 @@ function handleCalculate() {
 
 /**
  * 実際の計算処理
- * @param {number} price - 販売価格
+ * @param {number} totalAmount - 総売上
+ * @param {number} unitPrice - 1本あたりの価格
+ * @param {number} quantity - 本数
  */
-function performCalculation(price) {
+function performCalculation(totalAmount, unitPrice, quantity) {
     
     try {
         // 全プラットフォームの計算実行
-        const results = calculateAllPlatforms(price);
+        const results = calculateAllPlatforms(totalAmount);
         
         if (!results || !validateCalculationResults(results)) {
             throw new Error('計算結果が不正です');
         }
+        
+        // resultsに単価と本数情報を追加
+        results.unitPrice = unitPrice;
+        results.quantity = quantity;
+        
+        // グローバル変数に保存
+        lastCalculationResults = results;
         
         // 結果をUIに表示
         displayCalculationResults(results);
@@ -305,6 +361,23 @@ function handleSaveImage() {
         return;
     }
     
+    // Googleアナリティクス: 画像保存ボタンクリックイベント
+    if (typeof gtag !== 'undefined') {
+        console.log('GA Event: 画像保存ボタンクリック', {
+            event: 'save_image_button_click',
+            category: 'user_action',
+            label: 'save_result_image'
+        });
+        
+        gtag('event', 'save_image_button_click', {
+            'event_category': 'user_action',
+            'event_label': 'save_result_image',
+            'value': 1
+        });
+    } else {
+        console.warn('Google Analytics (gtag) が読み込まれていません');
+    }
+    
     // ボタン無効化
     saveBtn.disabled = true;
     saveBtn.textContent = '保存中...';
@@ -375,13 +448,18 @@ function handleSaveImage() {
  */
 function getCurrentCalculationResults() {
     
+    // 保存された計算結果がある場合はそれを返す
+    if (lastCalculationResults) {
+        return lastCalculationResults;
+    }
+    
+    // フォールバック: 表示されている価格から結果を再構築
     const resultsSection = document.getElementById('results-section');
     
     if (!resultsSection) {
         return null;
     }
     
-    // 表示されている価格から結果を再構築
     const priceText = document.getElementById('results-title')?.textContent;
     
     if (!priceText) {
@@ -621,4 +699,55 @@ function handlePreviewImage() {
     } catch (error) {
         showError('input-error', 'プレビュー表示に失敗しました: ' + error.message);
     }
+}
+
+/**
+ * キャッシュクリアボタンを追加（デバッグ用）
+ */
+function addCacheClearButton() {
+    const button = document.createElement('button');
+    button.textContent = 'キャッシュクリア';
+    button.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #ff4444;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 9999;
+        font-size: 14px;
+    `;
+    
+    button.addEventListener('click', async () => {
+        if (confirm('キャッシュをクリアしますか？')) {
+            try {
+                // Service Workerにメッセージを送信
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    const messageChannel = new MessageChannel();
+                    messageChannel.port1.onmessage = (event) => {
+                        console.log('Cache cleared:', event.data);
+                        alert('キャッシュをクリアしました。ページを再読み込みします。');
+                        window.location.reload(true);
+                    };
+                    
+                    navigator.serviceWorker.controller.postMessage(
+                        { action: 'CLEAR_CACHE' },
+                        [messageChannel.port2]
+                    );
+                } else {
+                    // Service Workerが利用できない場合は通常のリロード
+                    alert('ブラウザのキャッシュをクリアしてページを再読み込みします。');
+                    window.location.reload(true);
+                }
+            } catch (error) {
+                console.error('キャッシュクリアエラー:', error);
+                alert('キャッシュのクリアに失敗しました。');
+            }
+        }
+    });
+    
+    document.body.appendChild(button);
 }
