@@ -98,6 +98,48 @@ function validatePriceRange(price) {
 }
 
 /**
+ * 本数の範囲をチェックする
+ * @param {number} quantity - チェックする本数
+ * @returns {object} { isValid: boolean, message: string }
+ */
+function validateQuantityRange(quantity) {
+    if (!isValidNumber(quantity)) {
+        return {
+            isValid: false,
+            message: '有効な本数を入力してください'
+        };
+    }
+    
+    const num = Number(quantity);
+    
+    if (num < 1) {
+        return {
+            isValid: false,
+            message: '1本以上の本数を入力してください'
+        };
+    }
+    
+    if (num > 10000) {
+        return {
+            isValid: false,
+            message: '本数は10,000本以下で入力してください'
+        };
+    }
+    
+    if (!Number.isInteger(num)) {
+        return {
+            isValid: false,
+            message: '本数は整数で入力してください'
+        };
+    }
+    
+    return {
+        isValid: true,
+        message: ''
+    };
+}
+
+/**
  * HTML特殊文字をエスケープしてXSS攻撃を防ぐ
  * @param {string} str - エスケープする文字列
  * @returns {string} エスケープされた文字列
@@ -249,12 +291,16 @@ function debounce(func, wait) {
  * リアルタイムバリデーション用の入力チェック
  * @param {HTMLInputElement} inputElement - 入力要素
  * @param {Function} callback - バリデーション結果のコールバック
+ * @param {Function} validationFunc - カスタムバリデーション関数（オプション）
  */
-function setupRealTimeValidation(inputElement, callback) {
+function setupRealTimeValidation(inputElement, callback, validationFunc) {
     if (!inputElement || typeof callback !== 'function') return;
     
+    // デフォルトのバリデーション関数は validatePriceRange
+    const validator = validationFunc || validatePriceRange;
+    
     const debouncedValidation = debounce((value) => {
-        const validation = validatePriceRange(value);
+        const validation = validator(value);
         callback(validation);
     }, 300);
     
@@ -275,7 +321,7 @@ function setupRealTimeValidation(inputElement, callback) {
     inputElement.addEventListener('blur', function(e) {
         const value = e.target.value.trim();
         if (value !== '') {
-            const validation = validatePriceRange(value);
+            const validation = validator(value);
             callback(validation);
         }
     });
@@ -462,6 +508,7 @@ window.Utils = {
     isValidNumber,
     parseToSafeNumber,
     validatePriceRange,
+    validateQuantityRange,
     sanitizeHtml,
     showError,
     hideError,
