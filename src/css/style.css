@@ -205,7 +205,7 @@ body {
     box-shadow: var(--shadow);
     border: 1px solid var(--border-color);
     width: 100%;
-    max-width: 500px;
+    max-width: 650px;
 }
 
 .form-label {
@@ -223,11 +223,28 @@ body {
     display: flex;
     align-items: center;
     gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: 0;
+}
+
+/* デスクトップ用のラッパースタイル */
+.price-input-wrapper,
+.quantity-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.price-input-wrapper {
+    flex: 2;
+}
+
+.quantity-input-wrapper {
+    flex: 1.5;
 }
 
 /* 入力フィールド */
-.price-input {
+.price-input,
+.quantity-input {
     flex: 1;
     padding: var(--spacing-lg) var(--spacing-md);
     border: 1px solid var(--border-color);
@@ -240,25 +257,45 @@ body {
     transition: all 0.2s ease;
     outline: none;
     line-height: var(--line-height-tight);
+    max-width: 200px;
+    padding: 1rem;
 }
 
-.price-input:focus {
+.quantity-input {
+    max-width: 80px;
+}
+
+.price-input:focus,
+.quantity-input:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px var(--primary-light);
 }
 
-.price-input.valid {
+.price-input.valid,
+.quantity-input.valid {
     border-color: var(--success-color);
     box-shadow: 0 0 0 3px var(--secondary-light);
 }
 
-.price-input.invalid {
+.price-input.invalid,
+.quantity-input.invalid {
     border-color: var(--error-color);
     box-shadow: 0 0 0 3px rgb(248 113 113 / 0.1);
 }
 
-.input-unit {
+/* 掛け算記号 */
+.input-multiply {
     font-size: var(--font-size-component);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    line-height: var(--line-height-tight);
+    margin: 0 var(--spacing-sm);
+}
+
+.input-unit {
+    font-size: 13px;
+    margin-top: 0.5rem;
     font-weight: var(--font-weight-medium);
     color: var(--text-secondary);
     white-space: nowrap;
@@ -292,6 +329,7 @@ body {
 .calculate-btn {
     padding: var(--spacing-lg) var(--spacing-xl);
     min-width: 120px;
+    width: 100%;
 }
 
 .save-image-btn {
@@ -343,6 +381,7 @@ body {
 .results-header {
     text-align: center;
     margin-bottom: var(--spacing-lg);
+    display: none;
 }
 
 .results-title {
@@ -507,7 +546,7 @@ body {
     .price-input {
         background: var(--bg-primary);
         color: var(--text-primary);
-                text-align: right;
+        text-align: right;
     }
 }
 
@@ -680,6 +719,7 @@ body {
     padding: 1rem;
     box-sizing: border-box;
     border-radius: 10px;
+    text-align: center;
 }
 
 .balloon2:before {
