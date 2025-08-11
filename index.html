@@ -20,7 +20,7 @@
     <meta name="twitter:description" content="note・tips・Brain・ココナラの各販売手数料を引いた、手元に残る金額を計算・比較できるツールです。" />
     <meta name="twitter:image" content="assets/images/Net_Salay_OGP.jpg" />
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com;">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://region1.google-analytics.com https://www.googletagmanager.com;">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-25SNDXZ4X5"></script>
@@ -61,9 +61,17 @@
             <div class="form-container">
                 <!-- <label for="price-input" class="form-label">販売価格</label> -->
                 <div class="input-group">
-                    <input type="number" id="price-input" class="price-input" placeholder="10000" min="1" step="1"
-                        autocomplete="off">
-                    <span class="input-unit">円</span>
+                    <div class="price-input-wrapper">
+                        <input type="number" id="price-input" class="price-input" placeholder="10000" min="1" step="1"
+                            autocomplete="off">
+                        <span class="input-unit">円</span>
+                    </div>
+                    <div class="quantity-input-wrapper">
+                        <span class="input-multiply">×</span>
+                        <input type="number" id="quantity-input" class="quantity-input" placeholder="1" min="1" step="1"
+                            autocomplete="off">
+                        <span class="input-unit">本</span>
+                    </div>
                     <button type="button" id="calculate-btn" class="calculate-btn">計算</button>
                 </div>
                 <div class="results-header">
@@ -129,15 +137,15 @@
                     <div class="fee-breakdown">
                         <div class="fee-item">
                             <span class="fee-label">振込手数料(1回あたり)</span>
-                            <span class="fee-value">270円</span>
+                            <span class="fee-value withdrawal-fee">270円</span>
                         </div>
                     </div>
                 </div>
                 <!-- 画像保存ボタンセクション -->
                 <div class="save-section-inline">
                     <div class="sample-image">
-                        <img src="assets/images/sample.webp" alt="保存例のサンプル" class="sample-preview">
-                        <p class="sample-label">保存サンプル</p>
+                        <img src="assets/images/sample.webp" alt="保存例のプレビュー" class="sample-preview">
+                        <p class="sample-label">保存プレビュー</p>
                     </div>
                     <button type="button" id="save-image-btn" class="save-image-btn">結果を画像で保存</button>
 
@@ -158,11 +166,11 @@
                             <div class="fee-options">
                                 <div class="fee-option">
                                     <span class="option-label">通常会員</span>
-                                    <span class="option-value">550円</span>
+                                    <span class="option-value withdrawal-fee">550円</span>
                                 </div>
                                 <div class="fee-option">
                                     <span class="option-label">プラス会員</span>
-                                    <span class="option-value">330円</span>
+                                    <span class="option-value withdrawal-fee">330円</span>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +189,7 @@
                         </div>
                         <div class="fee-item">
                             <span class="fee-label">出金手数料(1回あたり)</span>
-                            <span class="fee-value">275円</span>
+                            <span class="fee-value withdrawal-fee">275円</span>
                         </div>
                     </div>
                 </div>
@@ -201,11 +209,11 @@
                             <div class="fee-options">
                                 <div class="fee-option">
                                     <span class="option-label">3,000円未満</span>
-                                    <span class="option-value">160円</span>
+                                    <span class="option-value withdrawal-fee">160円</span>
                                 </div>
                                 <div class="fee-option">
                                     <span class="option-label">3,000円以上</span>
-                                    <span class="option-value">無料</span>
+                                    <span class="option-value withdrawal-fee">無料</span>
                                 </div>
                             </div>
                         </div>
