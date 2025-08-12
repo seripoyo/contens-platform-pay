@@ -235,7 +235,7 @@ function drawResultsOnBackground(ctx, canvas, results) {
     ctx.font = 'bold 72px "NotoSansJPCanvas", "NotoSansJP", "Noto Sans JP", sans-serif';
     let titleText;
     if (results.quantity && results.unitPrice) {
-        titleText = formatCurrency(results.unitPrice) + '円×' + results.quantity + '本 販売時の手取り額';
+        titleText = formatCurrency(results.unitPrice) + '円×' + results.quantity + '人 販売時の手取り額';
     } else {
         titleText = formatCurrency(results.price) + '円 販売時の手取り額';
     }
@@ -967,34 +967,31 @@ function replaceSampleImageWithCanvas(testData) {
         return;
     }
     
-    // 既存のcanvasまたはimg要素を取得
-    let sampleCanvas = sampleImageDiv.querySelector('canvas');
+    // 既存のimg要素を取得
     const existingImg = sampleImageDiv.querySelector('img');
     
-    if (!sampleCanvas) {
-        // canvasが存在しない場合は新規作成
-        if (!existingImg) {
-            return;
-        }
-        
-        sampleCanvas = document.createElement('canvas');
-        sampleCanvas.width = 1920;
-        sampleCanvas.height = 1080;
-        sampleCanvas.className = 'sample-preview';
-        sampleCanvas.style.cssText = `
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        `;
-        
-        // imgをcanvasに置換
-        sampleImageDiv.replaceChild(sampleCanvas, existingImg);
+    if (!existingImg) {
+        return;
     }
     
-    // canvasにコンテンツを描画（既存のcanvasの場合はクリアして再描画）
+    // 新しいcanvasを作成
+    const sampleCanvas = document.createElement('canvas');
+    sampleCanvas.width = 1920;
+    sampleCanvas.height = 1080;
+    sampleCanvas.className = 'sample-preview';
+    sampleCanvas.style.cssText = `
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    `;
+    
+    
+    // imgをcanvasに置換
+    sampleImageDiv.replaceChild(sampleCanvas, existingImg);
+    
+    // canvasにコンテンツを描画
     const ctx = sampleCanvas.getContext('2d');
-    ctx.clearRect(0, 0, sampleCanvas.width, sampleCanvas.height);
     
     // format.jpgを背景として読み込んで描画
     const bgImage = new Image();

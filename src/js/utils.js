@@ -106,7 +106,7 @@ function validateQuantityRange(quantity) {
     if (!isValidNumber(quantity)) {
         return {
             isValid: false,
-            message: '有効な本数を入力してください'
+            message: '有効な人数を入力してください'
         };
     }
     
@@ -115,21 +115,21 @@ function validateQuantityRange(quantity) {
     if (num < 1) {
         return {
             isValid: false,
-            message: '1本以上の本数を入力してください'
+            message: '1人以上の人数を入力してください'
         };
     }
     
     if (num > 10000) {
         return {
             isValid: false,
-            message: '本数は10,000本以下で入力してください'
+            message: '人数は10,000本以下で入力してください'
         };
     }
     
     if (!Number.isInteger(num)) {
         return {
             isValid: false,
-            message: '本数は整数で入力してください'
+            message: '人数は整数で入力してください'
         };
     }
     
