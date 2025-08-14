@@ -1,12 +1,14 @@
 # Net Salary - コンテンツ販売手取り額計算ツール
 
-![Net Salary](https://img.shields.io/badge/version-v1.1.0-blue)
+![Net Salary](https://img.shields.io/badge/version-v1.1.1-blue)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
 ![Canvas API](https://img.shields.io/badge/Canvas%20API-Enabled-green)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ## 🎯 アプリケーション概要
 ![コンテンツ販売プラットフォーム](assets/images/sample.webp)
+
+URL→https://net-salary.seripoyo.com/
 
 **Net Salary**は、コンテンツクリエイター向けの販売手取り額計算ツールです。note・tips・Brain・ココナラコンテンツマーケットの4大プラットフォームで、同じ販売価格でも手数料により異なる手取り額を一括計算。結果を16:9のJPEG画像として保存できます。
 
@@ -71,8 +73,8 @@
 
 1. **リポジトリのクローン**
 ```bash
-git clone https://github.com/yourusername/contents-hanbai.git
-cd contents-hanbai
+git clone https://github.com/seripoyo/https://github.com/seripoyo/contens-platform-pay.git
+cd https://github.com/seripoyo/contens-platform-pay
 ```
 
 2. **ローカルサーバーの起動**
@@ -144,7 +146,7 @@ npx live-server
 ## 📂 プロジェクト構成
 
 ```
-contents-hanbai/
+https://github.com/seripoyo/contens-platform-pay/
 ├── index.html              # メインページ
 ├── README.md              # この文書
 ├── CLAUDE.md              # 開発ガイドライン
@@ -175,7 +177,7 @@ contents-hanbai/
 
 ## 📞 サポート
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/contents-hanbai/issues)
+- **Issues**: [GitHub Issues](https://github.com/seripoyo/https://github.com/seripoyo/contens-platform-pay/issues)
 - **ドキュメント**: [CLAUDE.md](./CLAUDE.md)
 
 ## 📄 ライセンス
@@ -185,5 +187,5 @@ contents-hanbai/
 ---
 
 **最終更新**: 2025年8月14日  
-**バージョン**: v1.1.0  
-**開発者**: [@yourusername](https://github.com/yourusername)
+**バージョン**: v1.1.1  
+**開発者**: [@seripoyo](https://github.com/seripoyo/seripoyo)
