@@ -1,124 +1,189 @@
-<div id="top"></div>
+# Net Salary - コンテンツ販売手取り額計算ツール
 
-## 使用技術一覧
+![Net Salary](https://img.shields.io/badge/version-v1.1.0-blue)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
+![Canvas API](https://img.shields.io/badge/Canvas%20API-Enabled-green)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-<!-- シールド一覧 -->
-<p style="display: inline">
-  <img src="https://img.shields.io/badge/-Html5-E34F26.svg?logo=html5&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-CSS3-1572B6.svg?logo=css3&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-JavaScript-F7DF1E.svg?logo=javascript&style=for-the-badge&logoColor=black">
-  <img src="https://img.shields.io/badge/-Canvas%20API-FF6B35.svg?logo=html5&style=for-the-badge">
-</p>
+## 🎯 アプリケーション概要
+![コンテンツ販売プラットフォーム](assets/images/sample.webp)
 
-## 目次
+**Net Salary**は、コンテンツクリエイター向けの販売手取り額計算ツールです。note・tips・Brain・ココナラコンテンツマーケットの4大プラットフォームで、同じ販売価格でも手数料により異なる手取り額を一括計算。結果を16:9のJPEG画像として保存できます。
 
-1. [プロジェクトについて](#プロジェクトについて)
-2. [環境](#環境)
-3. [ディレクトリ構成](#ディレクトリ構成)
-4. [開発環境構築](#開発環境構築)
-5. [トラブルシューティング](#トラブルシューティング)
+### 💡 主な特徴
 
-<br />
-<div align="right">
-    <a href="#top"><strong>トップへ »</strong></a>
-</div>
-<br />
+- **🔍 4大プラットフォーム対応**: note、tips、Brain、ココナラを網羅
+- **💳 詳細な手数料計算**: noteの決済方法別手数料にも対応
+- **📸 画像保存機能**: Canvas APIで16:9の結果画像を生成
+- **📱 レスポンシブ対応**: PC・タブレット・スマートフォンに最適化
+- **🎨 シンプルUI**: メインカラー#00c79eの統一デザイン
 
-## プロジェクト名
+## 📱 対象ユーザー
 
-Net Salary - コンテンツ販売プラットフォーム手取り額計算ツール
+- 📝 **コンテンツクリエイター**: ブログ記事・教材の販売者
+- 🎯 **マーケター**: 価格戦略の立案者
+- 💰 **フリーランサー**: 収益計算が必要な個人事業主
+- 📊 **EC運営者**: 複数プラットフォーム展開の管理者
+- 🚀 **起業家**: デジタルコンテンツビジネス運営者
 
-## プロジェクトについて
+## 🚀 使い方
 
-各コンテンツ販売サイト（note・tips・Brain・ココナラコンテンツマーケット）の手数料体系を基に、販売価格から実際の手取り額を一括計算し、結果を16:9のJPEG画像として保存できるWEBアプリケーションです。
+### 1. 販売価格を入力
+販売予定の価格を円単位で入力
 
-**主な特徴:**
-- 4つの主要プラットフォームの手数料を一括比較
-- noteでは決済方法別の詳細な手数料計算
-- Canvas APIによる16:9画像生成・保存機能
-- レスポンシブ対応（PC/タブレット/スマートフォン）
+### 2. 各種オプションを選択
+- **note**: 決済方法（クレジットカード/キャリア決済/PayPay）を選択
+- **tips**: 会員種別（通常会員/プラス会員）を選択
 
-<p align="right">(<a href="#top">トップへ</a>)</p>
+### 3. 計算実行
+「計算する」ボタンをクリック
 
-## 環境
+### 4. 結果確認・保存
+各プラットフォームの手取り額が表示され、画像として保存可能
 
-<!-- 言語、フレームワーク、ミドルウェア、インフラの一覧とバージョンを記載 -->
+#### 📊 計算結果の内容
+- **手数料内訳**: 各プラットフォームの詳細な手数料
+- **手取り額**: 振込手数料を差し引いた最終的な受取額
+- **比較表示**: 4プラットフォームの一覧比較
 
-| 技術 | バージョン |
-| ----- | ---------- |
-| HTML5 | - |
-| CSS3 | - |
-| JavaScript | ES6+ |
-| Canvas API | - |
-| Noto Sans JP | - |
+## 🔧 技術仕様
 
-その他のリソースについては `assets/` フォルダを参照してください
+### フロントエンド
+- **言語**: JavaScript (ES6+)
+- **スタイル**: CSS3（カスタムプロパティ使用）
+- **画像生成**: Canvas API
+- **フォント**: Noto Sans JP
+- **レイアウト**: Flexbox/Grid
 
-<p align="right">(<a href="#top">トップへ</a>)</p>
+### 対応ブラウザ
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
 
-## ディレクトリ構成
+## 📦 インストール方法
 
-<!-- Treeコマンドを使ってディレクトリ構成を記載 -->
+### 前提条件
+- モダンブラウザ（上記対応ブラウザ参照）
+- ローカルサーバー環境（開発時）
+
+### セットアップ手順
+
+1. **リポジトリのクローン**
+```bash
+git clone https://github.com/yourusername/contents-hanbai.git
+cd contents-hanbai
+```
+
+2. **ローカルサーバーの起動**
+
+Python を使用する場合:
+```bash
+python -m http.server 8080
+```
+
+Node.js を使用する場合:
+```bash
+npx serve .
+# または
+npx live-server
+```
+
+3. **アクセス**
+ブラウザで http://localhost:8080 を開く
+
+## 🌐 デプロイメント
+
+### 推奨構成
+- **ホスティング**: GitHub Pages / Netlify / Vercel
+- **CDN**: CloudFlare（オプション）
+
+静的サイトのため、任意の静的ホスティングサービスで動作します。
+
+## 📋 使用例
+
+### note有料記事の販売
+**入力例**: 
+```
+販売価格: 1,000円
+決済方法: クレジットカード
+```
+
+**計算結果**:
+- 事務手数料: 50円（5%）
+- プラットフォーム利用料: 95円（10%）
+- 振込手数料: 270円
+- **手取り額: 585円**
+
+### 複数プラットフォーム比較
+同じ1,000円の商品でも：
+- **note（クレカ）**: 585円
+- **tips（通常会員）**: 310円
+- **Brain**: 605円
+- **ココナラ**: 620円
+
+## 💰 手数料体系
+
+### note（有料記事）
+- 事務手数料: 5%〜15%（決済方法による）
+- プラットフォーム利用料: 10%
+- 振込手数料: 270円
+
+### tips
+- 販売手数料: 14%
+- 振込手数料: 550円（通常）/ 330円（プラス会員）
+
+### Brain
+- 販売手数料: 12%
+- 出金手数料: 275円
+
+### ココナラコンテンツマーケット
+- 販売手数料: 22%
+- 振込手数料: 160円（3,000円未満）/ 無料（3,000円以上）
+
+## 📂 プロジェクト構成
 
 ```
 contents-hanbai/
 ├── index.html              # メインページ
-├── README.md              # プロジェクト説明
-├── CLAUDE.md              # Claude Code開発履歴
-├── template.md            # README.mdテンプレート
+├── README.md              # この文書
+├── CLAUDE.md              # 開発ガイドライン
 ├── src/
 │   ├── css/
-│   │   ├── style.css           # メインスタイル・CSS変数・フォント設定
-│   │   ├── responsive.css      # レスポンシブ対応（モバイル・タブレット）
-│   │   └── components.css      # UIコンポーネント別スタイル
+│   │   ├── style.css           # メインスタイル
+│   │   ├── responsive.css      # レスポンシブ対応
+│   │   └── components.css      # UIコンポーネント
 │   ├── js/
-│   │   ├── main.js            # メイン処理・DOM操作・イベント制御
-│   │   ├── calculator.js      # 計算ロジック（各プラットフォーム手数料）
-│   │   ├── imageGenerator.js  # Canvas API画像生成・16:9 JPEG出力
-│   │   └── utils.js           # ユーティリティ関数・バリデーション
+│   │   ├── main.js            # メイン処理
+│   │   ├── calculator.js      # 計算ロジック
+│   │   ├── imageGenerator.js  # 画像生成
+│   │   └── utils.js           # ユーティリティ
 │   └── fonts/
-│       └── NotoSansJP/        # Webフォントファイル（WOFF2/WOFF）
+│       └── NotoSansJP/        # Webフォント
 └── assets/
     └── images/
         ├── favicon.ico        # ファビコン
-        ├── sample.webp        # 画像保存サンプル
-        ├── Net_Salary.webp    # ロゴ画像
-        └── *.webp             # その他UI用画像
+        ├── sample.webp        # サンプル画像
+        └── Net_Salary.webp    # ロゴ
 ```
 
-<p align="right">(<a href="#top">トップへ</a>)</p>
+## ⚠️ 注意事項
 
-## 5. 対象外機能
+- 手数料は2025年8月時点の情報です
+- 各プラットフォームの最新の手数料体系をご確認ください
+- 計算結果は参考値であり、実際の振込額と異なる場合があります
 
-### 5.1 除外機能
-- アフィリエイト機能の計算
-- URL共有機能
-- 印刷・PDF出力機能
-- 計算履歴保存機能
-- プレビュー機能
+## 📞 サポート
 
-### 5.2 対象外プラットフォーム
-- tips/Brainのアフィリエイター収益計算
-- noteの定期購読マガジン等（有料記事以外）
+- **Issues**: [GitHub Issues](https://github.com/yourusername/contents-hanbai/issues)
+- **ドキュメント**: [CLAUDE.md](./CLAUDE.md)
 
-## 6. 成果物
+## 📄 ライセンス
 
-### 6.1 開発成果物
-- **index.html**: メインページ
-- **src/css/**: スタイルシート群（style.css, responsive.css, components.css）
-- **src/js/**: JavaScript群（main.js, calculator.js, imageGenerator.js, utils.js）
-- **src/fonts/**: Webフォント（Noto Sans JP）
-- **assets/**: 画像リソース
-- **README.md**: セットアップ手順・使用方法
-- **claude.md**: 開発履歴・技術メモ
-
-### 6.2 ドキュメント
-- 要件定義書（本書）
-- 技術仕様書
-- 操作マニュアル
+本プロジェクトはMITライセンスの下で公開されています。
 
 ---
 
-**作成日:** 2025年8月7日  
-**最終更新:** 2025年8月7日  
-**バージョン:** 1.0
+**最終更新**: 2025年8月14日  
+**バージョン**: v1.1.0  
+**開発者**: [@yourusername](https://github.com/yourusername)
